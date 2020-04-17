@@ -4,8 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .fox-object{
+            width: 218px;
+            height: 204px;
+        }
+        
+        .fox-eyes{
+            background-image: url(images/fox-eyes.png);
+            animation: moveEye 1s steps(2) infinite;
+        }
+
+        .fox-standing{
+            background-image: url(images/fox-standing.png);
+            animation: moveStand 1s steps(6) infinite;
+        }
+
+        .fox-running{
+            background-image: url(images/fox-running.png);
+            animation: moveRun 1s steps(8) infinite;
+        }
+
+        @keyframes moveEye{
+            from{background-position-x: 0px;}
+            to{background-position-x: -434px;}
+        }
+
+        @keyframes moveStand{
+            from{background-position-x: 0px;}
+            to{background-position-x: -1301px;}
+        }
+
+        @keyframes moveRun{
+            from{background-position-x: -216.88px;}
+            to{background-position-x: -1952px;}
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="fox-object fox-running">
+    </div>
 </body>
 </html>
