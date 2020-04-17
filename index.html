@@ -4,8 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .fox-eyes{
+            background-image: url(images/fox-eyes.png);
+            animation: moveEye 1s steps(2) infinite;
+        }
+
+        .fox-standing{
+            background-image: url(images/fox-standing.png);
+            animation: moveStand 1s steps(6) infinite;
+        }
+
+        .fox-running{
+            background-image: url(images/fox-running.png);
+            animation: moveRun 1s steps(8) infinite;
+        }
+
+        @keyframes moveEye{
+            from{background-position-x: 0px;}
+            to{background-position-x: -434px;}
+        }
+
+        @keyframes moveStand{
+            from{background-position-x: 0px;}
+            to{background-position-x: -1301px;}
+        }
+
+        @keyframes moveRun{
+            from{background-position-x: -216.88px;}
+            to{background-position-x: -1952px;}
+        }
+
+        body{
+            margin: 0;
+            padding: 0;
+        }
+
+        .fox-object{
+            width: 218px;
+            height: 204px;
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .backgroud{
+            background-image: url(images/backgroud.png);
+            height: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .backgroud-running{
+            animation: moveBackgroud 5s linear infinite;
+        }
+
+        @keyframes moveBackgroud{
+            from{background-position-x: 0px;}
+            to{background-position-x: -873px;}
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="backgroud backgroud-running">
+        <div class="fox-object fox-running">
+        </div>
+    </div>
 </body>
 </html>
