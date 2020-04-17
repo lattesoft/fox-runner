@@ -68,6 +68,7 @@
         .barrier-object{
             position: absolute;
             bottom: 20px;
+            width: 50px;
         }
     </style>
 </head>
@@ -75,22 +76,21 @@
     <div id="backgroud" class="backgroud">
         <div id="foxObject" class="fox-object fox-standing">
         </div>
-        <img id="barrierObject" class="barrier-object" src="images/objects/object1.png" style="left: 100%">
     </div>
     <script type="text/javascript">
         var status = "standing";
         var backgroud = document.getElementById("backgroud");
         var foxObject = document.getElementById("foxObject");
 
-        document.body.onkeydown = function(e){
-            if(e.keyCode == 32){
-                switch(status){
+
+        document.addEventListener ('keydown', (e) => {
+            switch(status){
                     case "standing": {
-                        ramdomObject();
                         status = "running";
                         backgroud.classList.add("backgroud-running");
                         foxObject.classList.remove("fox-standing");
                         foxObject.classList.add("fox-running");
+                        ramdomObject();
                         break;
                     }
                     case "running": {
@@ -105,20 +105,58 @@
                         break;
                     }
                 }
-            }
+        } );
+
+        function random(from, to){
+            return Math.floor(Math.random() * to) + from;
         }
 
-        function ramdomObject(){
+        function moveObject(objectNumber){
             var moveObject = setInterval(function(){
-                var element = document.querySelector('#barrierObject')
+                var element = document.querySelector('#objectNumber'+objectNumber)
+                
                 var leftValue = getComputedStyle(element).left.replace("px","");
                 leftValue = leftValue-1;
-                document.getElementById("barrierObject").style.left = (leftValue)+"px";
+                document.getElementById("objectNumber"+objectNumber).style.left = (leftValue)+"px";
                 if(leftValue <= -100){
+                    document.getElementById("objectNumber"+objectNumber).remove();
                     clearInterval(moveObject);
                 }
             },5.5);
         }
+
+        var objectNumber = 0;
+        function ramdomObject(){
+            let createObject = setTimeout(function(){
+                objectNumber++;
+                
+                let ele = document.getElementById("backgroud");
+
+                console.log(objectNumber);
+                let imgNode = document.createElement ('img');
+                ele.appendChild (imgNode);
+                imgNode.setAttribute (
+                    "id",
+                    "objectNumber"+objectNumber
+                );
+                imgNode.setAttribute (
+                    "class",
+                    "barrier-object"
+                );
+                imgNode.setAttribute (
+                    "src",
+                    'images/objects/object'+random(1,11)+'.png'
+                );
+                imgNode.setAttribute (
+                    "style",
+                    "left: 100%"
+                );
+
+                moveObject(objectNumber);
+                ramdomObject();
+            },random(1500, 3000));
+        }
+
     </script>
 </body>
 </html>
