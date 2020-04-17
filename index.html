@@ -46,6 +46,7 @@
             position: absolute;
             left: 25%;
             bottom: 20px;
+            transition: bottom .3s ease-in;
         }
 
         .backgroud{
@@ -66,9 +67,38 @@
     </style>
 </head>
 <body>
-    <div class="backgroud backgroud-running">
-        <div class="fox-object fox-running">
+    <div id="backgroud" class="backgroud">
+        <div id="foxObject" class="fox-object fox-standing">
         </div>
     </div>
+    <script type="text/javascript">
+        var status = "standing";
+        var backgroud = document.getElementById("backgroud");
+        var foxObject = document.getElementById("foxObject");
+        document.body.onkeyup = function(e){
+            if(e.keyCode == 32){
+                switch(status){
+                    case "standing": {
+                        status = "running";
+                        backgroud.classList.add("backgroud-running");
+                        foxObject.classList.remove("fox-standing");
+                        foxObject.classList.add("fox-running");
+                        break;
+                    }
+                    case "running": {
+                        foxObject.style.bottom="120px";
+                        status = "jumping";
+                        setTimeout(function(){
+                            foxObject.style.bottom="20px";
+                            setTimeout(function(){
+                                status = "running";
+                            },300);
+                        },300);
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
