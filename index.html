@@ -81,30 +81,21 @@
         var status = "standing";
         var backgroud = document.getElementById("backgroud");
         var foxObject = document.getElementById("foxObject");
+        var foxObjectLeft = getComputedStyle(foxObject).left.replace("px","");
+        var barrierStatus = "ok";
 
 
         document.addEventListener ('keydown', (e) => {
-            switch(status){
-                    case "standing": {
-                        status = "running";
-                        backgroud.classList.add("backgroud-running");
-                        foxObject.classList.remove("fox-standing");
-                        foxObject.classList.add("fox-running");
-                        ramdomObject();
-                        break;
-                    }
-                    case "running": {
-                        foxObject.style.bottom="150px";
-                        status = "jumping";
-                        setTimeout(function(){
-                            foxObject.style.bottom="20px";
-                            setTimeout(function(){
-                                status = "running";
-                            },700);
-                        },700);
-                        break;
-                    }
+            switch(e.keyCode){
+                case 32 : {
+                    startGame();
+                    break;
                 }
+                case 27 : {
+                    endGame();
+                    break;
+                }
+            }
         } );
 
         function random(from, to){
@@ -114,13 +105,25 @@
         function moveObject(objectNumber){
             var moveObject = setInterval(function(){
                 var element = document.querySelector('#objectNumber'+objectNumber)
+                if(status === "standing" || !element){
+                    clearInterval(moveObject);
+                    return ;
+                }
                 
                 var leftValue = getComputedStyle(element).left.replace("px","");
                 leftValue = leftValue-1;
                 document.getElementById("objectNumber"+objectNumber).style.left = (leftValue)+"px";
+                var objectDiffFox = leftValue - foxObjectLeft;
+                if(objectDiffFox > 50 && objectDiffFox < 150){
+                    console.log("is not a jump");
+                    if(status !== "jumping"){
+                        clearInterval(moveObject);
+                        endGame();
+                    }
+                }
                 if(leftValue <= -100){
-                    document.getElementById("objectNumber"+objectNumber).remove();
                     clearInterval(moveObject);
+                    document.getElementById("objectNumber"+objectNumber).remove();
                 }
             },5.5);
         }
@@ -152,9 +155,61 @@
                     "left: 100%"
                 );
 
-                moveObject(objectNumber);
-                ramdomObject();
+                if(status !== "standing"){
+                    moveObject(objectNumber);
+                    if(barrierStatus === "ok"){
+                        barrierStatus = "block";
+                        ramdomObject();
+                        setTimeout(function(){
+                            barrierStatus = "ok";
+                        },1500);
+                    }
+                    
+                }
+                return;
+                
             },random(1500, 3000));
+        }
+
+        function endGame(){
+            status = "standing";
+            backgroud.classList.remove("backgroud-running");
+            foxObject.classList.add("fox-standing");
+            foxObject.classList.remove("fox-running");
+            // document.querySelector('.barrier-object').remove();
+            alert("Game is over. Press space bar to try again.");
+        }
+
+        function removeObject(){
+            var ele = document.querySelector(".barrier-object");
+            if(ele){
+                document.querySelectorAll(".barrier-object").forEach(e => e.remove());
+            }
+        }
+
+        function startGame(){
+            switch(status){
+                case "standing": {
+                    status = "running";
+                    removeObject();
+                    backgroud.classList.add("backgroud-running");
+                    foxObject.classList.remove("fox-standing");
+                    foxObject.classList.add("fox-running");
+                    ramdomObject();
+                    break;
+                }
+                case "running": {
+                    foxObject.style.bottom="150px";
+                    status = "jumping";
+                    setTimeout(function(){
+                        foxObject.style.bottom="20px";
+                        setTimeout(function(){
+                            status = "running";
+                        },700);
+                    },700);
+                    break;
+                }
+            }
         }
 
     </script>
