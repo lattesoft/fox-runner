@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fox Runner</title>
+    <link rel="stylesheet" href="assets/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <script src="assets/jquery-3.4.1.slim.min.js"></script>
+    <script src="assets/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+
     <style>
         .fox-eyes{
             background-image: url(images/fox-eyes.png);
@@ -50,7 +54,7 @@
         }
 
         .backgroud{
-            background-image: url(images/backgroud.png);
+            background-image: url(images/background.png);
             height: 500px;
             width: 100%;
             position: relative;
@@ -74,6 +78,15 @@
     </style>
 </head>
 <body>
+    <audio id="backgroundMusic" loop src="assets/souds/01_background_music.mp3" preload="auto">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="passSound" src="assets/souds/02_coins.wav" preload="auto">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="gameOverSound" src="assets/souds/04_bass.wav" preload="auto">
+        Your browser does not support the audio element.
+    </audio>
     <div id="backgroud" class="backgroud">
         <div id="foxObject" class="fox-object fox-standing">
         </div>
@@ -172,6 +185,8 @@
         }
 
         function endGame(){
+            $("#gameOverSound")[0].play();
+            $("#backgroundMusic")[0].pause();
             status = "standing";
             backgroud.classList.remove("backgroud-running");
             foxObject.classList.add("fox-standing");
@@ -192,10 +207,13 @@
                 case "standing": {
                     status = "running";
                     removeObject();
+                    // document.getElementById();
+                    $("#backgroundMusic")[0].play();
                     backgroud.classList.add("backgroud-running");
                     foxObject.classList.remove("fox-standing");
                     foxObject.classList.add("fox-running");
                     ramdomObject();
+                    
                     break;
                 }
                 case "running": {
