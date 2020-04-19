@@ -5,100 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fox Runner</title>
+    <link rel="icon" href="images/icon.png" type="image/png">
     <link rel="stylesheet" href="assets/bootstrap-4.4.1-dist/css/bootstrap.min.css">
-    <script src="assets/jquery-3.4.1.slim.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="assets/jquery-3.5.0.min.js"></script>
     <script src="assets/popper.min.js"></script>
     <script src="assets/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
-    
-
-    <style>
-        .fox-eyes {
-            background-image: url(images/fox-eyes.png);
-            animation: moveEye 1s steps(2) infinite;
-        }
-
-        .fox-standing {
-            background-image: url(images/fox-standing.png);
-            animation: moveStand 1s steps(6) infinite;
-        }
-
-        .fox-running {
-            background-image: url(images/fox-running.png);
-            animation: moveRun 1s steps(8) infinite;
-        }
-
-        @keyframes moveEye {
-            from {
-                background-position-x: 0px;
-            }
-
-            to {
-                background-position-x: -434px;
-            }
-        }
-
-        @keyframes moveStand {
-            from {
-                background-position-x: 0px;
-            }
-
-            to {
-                background-position-x: -1301px;
-            }
-        }
-
-        @keyframes moveRun {
-            from {
-                background-position-x: -216.88px;
-            }
-
-            to {
-                background-position-x: -1952px;
-            }
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .fox-object {
-            width: 218px;
-            height: 204px;
-            position: absolute;
-            left: 25%;
-            bottom: 20px;
-            transition: bottom .6s;
-        }
-
-        .backgroud {
-            background-image: url(images/background.png);
-            height: 500px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .backgroud-running {
-            animation: moveBackgroud 5s linear infinite;
-        }
-
-        @keyframes moveBackgroud {
-            from {
-                background-position-x: 0px;
-            }
-
-            to {
-                background-position-x: -873px;
-            }
-        }
-
-        .barrier-object {
-            position: absolute;
-            bottom: 20px;
-            width: 50px;
-        }
-    </style>
 </head>
 
 <body>
@@ -131,154 +43,18 @@
         Your browser does not support the audio element.
     </audio>
     <div id="backgroud" class="backgroud">
-        <div id="foxObject" data-toggle="tooltip" data-placement="top" title="Sammy" data-trigger="manual" class="fox-object fox-standing">
+        <div id="foxObject" class="fox-object fox-standing">
         </div>
     </div>
-    <script type="text/javascript">
-        var status = "standing";
-        var backgroud = document.getElementById("backgroud");
-        var foxObject = document.getElementById("foxObject");
-        var foxObjectLeft = getComputedStyle(foxObject).left.replace("px", "");
-        var barrierStatus = "ok";
 
-        document.addEventListener('keydown', (e) => {
-            switch (e.keyCode) {
-                case 32: {
-                    startGame();
-                    break;
-                }
-                case 27: {
-                    endGame();
-                    break;
-                }
-            }
-        });
 
-        function random(from, to) {
-            return Math.floor(Math.random() * to) + from;
-        }
-
-        function moveObject(objectNumber) {
-            var moveObject = setInterval(function () {
-                var element = document.querySelector('#objectNumber' + objectNumber)
-                if (status === "standing" || !element) {
-                    clearInterval(moveObject);
-                    return;
-                }
-
-                var leftValue = getComputedStyle(element).left.replace("px", "");
-                leftValue = leftValue - 1;
-                document.getElementById("objectNumber" + objectNumber).style.left = (leftValue) + "px";
-                var objectDiffFox = leftValue - foxObjectLeft;
-                if (objectDiffFox > 0 && objectDiffFox < 150) {
-                    console.log("is not a jump");
-                    if (status !== "jumping") {
-                        clearInterval(moveObject);
-                        endGame();
-                    }
-                }
-                if (leftValue <= -100) {
-                    clearInterval(moveObject);
-                    document.getElementById("objectNumber" + objectNumber).remove();
-                }
-            }, 5.5);
-        }
-
-        var objectNumber = 0;
-        function ramdomObject() {
-            let createObject = setTimeout(function () {
-                objectNumber++;
-
-                let ele = document.getElementById("backgroud");
-
-                console.log(objectNumber);
-                let imgNode = document.createElement('img');
-                ele.appendChild(imgNode);
-                imgNode.setAttribute(
-                    "id",
-                    "objectNumber" + objectNumber
-                );
-                imgNode.setAttribute(
-                    "class",
-                    "barrier-object"
-                );
-                imgNode.setAttribute(
-                    "src",
-                    'images/objects/object' + random(1, 11) + '.png'
-                );
-                imgNode.setAttribute(
-                    "style",
-                    "left: 100%"
-                );
-
-                if (status !== "standing") {
-                    moveObject(objectNumber);
-                    if (barrierStatus === "ok") {
-                        barrierStatus = "block";
-                        ramdomObject();
-                        setTimeout(function () {
-                            barrierStatus = "ok";
-                        }, 1500);
-                    }
-
-                }
-                return;
-
-            }, random(1500, 3000));
-        }
-
-        function endGame() {
-            $('#gameOverModel').modal('show');
-            $("#gameOverSound")[0].play();
-            $("#backgroundMusic")[0].pause();
-            status = "standing";
-            backgroud.classList.remove("backgroud-running");
-            foxObject.classList.add("fox-standing");
-            foxObject.classList.remove("fox-running");
-        }
-
-        function removeObject() {
-            var ele = document.querySelector(".barrier-object");
-            if (ele) {
-                document.querySelectorAll(".barrier-object").forEach(e => e.remove());
-            }
-        }
-
-        function startGame() {
-            switch (status) {
-                case "standing": {
-                    status = "running";
-                    removeObject();
-                    // document.getElementById();
-                    $("#backgroundMusic")[0].play();
-                    backgroud.classList.add("backgroud-running");
-                    foxObject.classList.remove("fox-standing");
-                    foxObject.classList.add("fox-running");
-                    ramdomObject();
-
-                    break;
-                }
-                case "running": {
-                    foxObject.style.bottom = "150px";
-                    status = "jumping";
-                    setTimeout(function () {
-                        foxObject.style.bottom = "20px";
-                        setTimeout(function () {
-                            status = "running";
-                        }, 700);
-                    }, 700);
-                    break;
-                }
-            }
-        }
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
 
 
 
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip('show')
-        })
 
-    </script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
