@@ -57,7 +57,7 @@ body {
     transition: bottom .6s;
 }
 
-.backgroud {
+.background {
     background-image: url(../images/background.png);
     height: 500px;
     width: 100%;
@@ -65,7 +65,7 @@ body {
     overflow: hidden;
 }
 
-.backgroud-running {
+.background-running {
     animation: moveBackgroud 5s linear infinite;
 }
 
