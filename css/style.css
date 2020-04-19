@@ -84,3 +84,8 @@ body {
     bottom: 20px;
     width: 50px;
 }
+
+.items{
+    width: 100%;
+    overflow: hidden;
+}
