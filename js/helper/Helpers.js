@@ -67,10 +67,10 @@ class Fox {
         }
     }
 
-    setName(name = this.foxInfo.name){
-        if(name) this.foxInfo.name = name;
+    setName(name = this.foxInfo.name) {
+        if (name) this.foxInfo.name = name;
         $("#foxObject").tooltip("dispose").tooltip({
-            title: name+", HP="+this.foxInfo.hp,
+            title: name + ", HP=" + this.foxInfo.hp,
             trigger: "manual"
         }).tooltip('show');
     }
@@ -102,23 +102,24 @@ class Item {
             $("#item" + objectId).css("left", --objectLeft);
             let objectLeftDiffFox = objectLeft - foxObject;
             console.log(this.fox.foxInfo.status);
-            if (objectLeftDiffFox > 0 && objectLeftDiffFox < 50 && this.fox.foxInfo.status !== "jumping") {
-
-                if(!this.itemPass){
+            if (!this.itemPass) {
+                if (objectLeftDiffFox > 0 && objectLeftDiffFox < 50 && this.fox.foxInfo.status !== "jumping") {
                     this.itemPass = true;
+                    $("#passSound")[0].play();
+                    
                     this.fox.foxInfo.hp = this.fox.foxInfo.hp + this.item.hp;
-                    if(this.fox.foxInfo.hp < 0){
+                    if (this.fox.foxInfo.hp < 0) {
                         this.fox.foxInfo.hp = 0;
-                    }
-                    this.fox.setName();
+                    } 
                     $("#item" + objectId).remove();
-                }
+                    this.fox.setName();
+                    
+                    if (this.fox.foxInfo.hp <= 0) {
+                        clearInterval(this.interval);
+                        this.fox.end();
+                    }
 
-                if(this.fox.foxInfo.hp <= 0){
-                    clearInterval(this.interval);
-                    this.fox.end();
                 }
-                
             }
 
             if (objectLeft <= -100) {
