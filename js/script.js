@@ -3,11 +3,6 @@ var backgroud = document.getElementById("backgroud");
 var foxObject = document.getElementById("foxObject");
 var foxObjectLeft = getComputedStyle(foxObject).left.replace("px", "");
 var barrierStatus = "ok";
-var foxInfo = {
-    name: "Sammy",
-    hp: "",
-    level: ""
-}
 
 document.addEventListener('keydown', (e) => {
     switch (e.keyCode) {
@@ -144,6 +139,13 @@ function startGame() {
  * Facebook Login
  * 
  * */
+
+var foxInfo = {
+    name: "Sammy",
+    hp: "",
+    level: ""
+}
+
 window.fbAsyncInit = function () {
     FB.init({
         appId: '2658551874377386',
