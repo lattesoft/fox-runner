@@ -46,7 +46,7 @@
             position: absolute;
             left: 25%;
             bottom: 20px;
-            transition: bottom .6s ease-in;
+            transition: bottom .6s;
         }
 
         .backgroud{
@@ -54,6 +54,7 @@
             height: 500px;
             width: 100%;
             position: relative;
+            overflow: hidden;
         }
 
         .backgroud-running{
@@ -84,7 +85,6 @@
         var foxObjectLeft = getComputedStyle(foxObject).left.replace("px","");
         var barrierStatus = "ok";
 
-
         document.addEventListener ('keydown', (e) => {
             switch(e.keyCode){
                 case 32 : {
@@ -114,7 +114,7 @@
                 leftValue = leftValue-1;
                 document.getElementById("objectNumber"+objectNumber).style.left = (leftValue)+"px";
                 var objectDiffFox = leftValue - foxObjectLeft;
-                if(objectDiffFox > 50 && objectDiffFox < 150){
+                if(objectDiffFox > 0 && objectDiffFox < 150){
                     console.log("is not a jump");
                     if(status !== "jumping"){
                         clearInterval(moveObject);
